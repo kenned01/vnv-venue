@@ -1,0 +1,39 @@
+{% extends "templates/base.twig" %}
+
+{%  block styles %}
+    <style>
+        .container {
+            height: 100dvh;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    <main class="container d-flex justify-content-center align-items-center">
+        <section class="card">
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">Default file input example</label>
+                        <input class="form-control" type="file" id="formFile" name="file">
+                    </div>
+
+                    <button class="btn btn-secondary">
+                        UPLOAD
+                    </button>
+                </form>
+            </div>
+
+            {% if file is not null %}
+                <section class="card-footer">
+                    <img src="{{ asset_for(file) }}" class="img-thumbnail" alt="prev image">
+                </section>
+            {% endif %}
+        </section>
+
+
+    </main>
+
+{% endblock %}

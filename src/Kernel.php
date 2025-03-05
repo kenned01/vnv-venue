@@ -110,7 +110,7 @@ class Kernel {
 
     private function getPublicView(array $urlViews): array
     {
-        $view = $urlViews[0];
+        $view = implode(DIRECTORY_SEPARATOR, $urlViews);
         $baseView = __DIR__."/views/".self::$publicFolderViews;
 
         return $this->getView($baseView, $view);

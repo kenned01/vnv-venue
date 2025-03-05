@@ -1,0 +1,4 @@
+vendor
+
+!public/files/.gitkeep
+public/files/*

@@ -1,4 +1,4 @@
 vendor
-
+.env
 !public/files/.gitkeep
 public/files/*

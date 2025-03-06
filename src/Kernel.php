@@ -99,7 +99,7 @@ class Kernel {
 
     private function getPrivateView(array $urlViews): array
     {
-        $view = $urlViews[1];
+        $view = implode(array_slice($urlViews, 1));
         $user = LoginService::getSession();
         $userLevel = $user->getLevel();
 
@@ -118,7 +118,7 @@ class Kernel {
 
     private function getApiViews(array $urlViews): array
     {
-        $view = $urlViews[0];
+        $view = implode(DIRECTORY_SEPARATOR, $urlViews);
         $baseView = __DIR__."/views/".self::$apiFolderViews;
 
         if (file_exists("$baseView/$view.php")) {

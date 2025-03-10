@@ -2,6 +2,7 @@
 
 use App\Services\LoginService;
 use App\Utils\LocationUtils;
+use App\Utils\MessageUtil;
 use App\Utils\Router;
 use App\Utils\TemplateResponse;
 
@@ -18,9 +19,14 @@ $router->post(function () {
         $password = $_POST['password'];
 
         $loginService = new LoginService();
-        $loginService->authenticate($email, $password);
+        try {
+            $loginService->authenticate($email, $password);
+        } catch (Exception $e) {
+            MessageUtil::setMessage($e->getMessage());
+            LocationUtils::redirectInternal("login");
+        }
 
-        LocationUtils::redirectInternal('panel/example');
+        LocationUtils::redirectInternal('panel/home');
     } catch (Exception $e) {
         return $e->getMessage();
     }

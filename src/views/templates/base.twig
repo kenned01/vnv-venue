@@ -25,11 +25,42 @@
     {% endblock %}
 
     <script src="{{ asset_for('template/js/app.js') }}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ env.GOOGLE_KEY }}&loading=async&libraries=places&callback=initMap"></script>
+    <script src="{{ asset_for('assets/js/googleMaps.js') }}" ></script>
     <script>
-        {% if alertMessage is not null %}
-            alert('{{ alertMessage.message }}')
-        {% endif %}
+        function formatNumber(elm) {
+            let value = elm.value.replace(/\D/g, ""); // Remove non-numeric characters
+
+            if (value.startsWith("1")) {
+                value = "+" + value; // Ensure +1 is kept
+            } else if (value.length > 0) {
+                value = "+1" + value; // Add +1 if not present
+            }
+
+            if (value.length > 2 && value.length <= 5) {
+                value = `${value.slice(0, 2)} (${value.slice(2)}`;
+            } else if (value.length > 5 && value.length <= 8) {
+                value = `${value.slice(0, 2)} (${value.slice(2, 5)}) ${value.slice(5)}`;
+            } else if (value.length > 8) {
+                value = `${value.slice(0, 2)} (${value.slice(2, 5)}) ${value.slice(5, 8)}-${value.slice(8, 12)}`;
+            }
+
+            elm.value = value;
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            {% if alertMessage is not null %}
+                setTimeout(() => {
+                    alert('{{ alertMessage.message }}')
+                }, 1)
+            {% endif %}
+
+            document.querySelectorAll("[data-phone]").forEach(elm => {
+                formatNumber(elm)
+                elm.addEventListener("input", () => formatNumber(elm))
+            })
+        })
     </script>
+
     {% block scripts %}{% endblock %}
 
 

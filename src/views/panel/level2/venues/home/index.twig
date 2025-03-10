@@ -1,0 +1,87 @@
+{% extends 'templates/base.admin.twig' %}
+{% import 'templates/macros.twig' as macros %}
+{% block body %}
+
+
+    <main class="container-fluid">
+
+        <h1 class="h3 mb-3">
+            My Venues
+        </h1>
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('panel/home') }}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">My Venues</li>
+            </ol>
+        </nav>
+
+        <section class="card">
+            <div class="card-body">
+                <a class="btn btn-secondary mb-3" href="{{ path('panel/venues/create') }}">Add</a>
+
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Address</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th>More & Actions</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for venue in venues %}
+                        <tr>
+                            <td>{{ venue.id }}</td>
+                            <td>{{ venue.name }}</td>
+                            <td>{{ venue.description }}</td>
+                            <td>{{ venue.address }}</td>
+                            <td>
+                                {{
+                                    categories
+                                    | filter(c => c.id == venue.category_id)
+                                    | first.name
+                                }}
+                            </td>
+
+                            <td>{{ venue.status }}</td>
+
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        More {{ macros.icon('more-horizontal') }}
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item"  href="{{ path('panel/venue-events/home?id=' ~ venue.id)  }}">View Events</a></li>
+                                        <li><a class="dropdown-item"  href="{{ path('panel/venue-promotions/home?id=' ~ venue.id)  }}">View Promotions</a></li>
+                                        <li><a class="dropdown-item"  href="{{ path('panel/venue-photos/home?id=' ~ venue.id)  }}">View Photos</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="{{ path('panel/venues/edit?id=' ~ venue.id)  }}">Edit Current Venue</a></li>
+                                        <li>
+                                            <form>
+                                                <form method="post" form-delete>
+                                                    <input type="hidden" name="action" value="delete" />
+                                                    <input type="hidden" name="id" value="{{ venue.id }}">
+
+                                                    <div class="d-grid gap-2 p-2">
+                                                        <button type="submit" class="btn btn-outline-danger btn-block">Delete</button>
+                                                    </div>
+                                                </form>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+{% endblock %}

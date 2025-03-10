@@ -1,0 +1,84 @@
+{% extends 'templates/base.admin.twig' %}
+
+{% block style %}
+    <style>
+        #card-element {
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        #card-errors {
+            color: red;
+        }
+
+        .membership {
+            font-size: 1.5rem;
+        }
+    </style>
+{%  endblock %}
+{% block body %}
+    <h1 class="h3 mb-3">
+        Membership
+    </h1>
+
+    <div class="card">
+        <div class="card-body">
+
+            <p class="membership">VNV VENUES MEMBERSHIP</p>
+
+            <p class="membership">This membership has a total of <strong>${{ membership_value }}</strong> annually</p>
+
+            <form id="payment-form">
+                <div id="card-element" class="form-control mb-3 py-3">
+                </div>
+
+                <button class="btn btn-secondary" type="submit">Pay</button>
+
+                <div id="card-errors"></div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://js.stripe.com/v3/"></script>
+
+    <script>
+        const stripe = Stripe("{{ stripe_key }}"); // Replace with your Stripe public key
+        const elements = stripe.elements();
+        const card = elements.create("card");
+        card.mount("#card-element");
+
+        const form = document.getElementById("payment-form");
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const { token, error } = await stripe.createToken(card);
+
+            if (error) {
+                document.getElementById("card-errors").textContent = error.message;
+            } else {
+                await payMembership(token.id)
+            }
+        });
+
+
+        async function payMembership(token) {
+
+            let data = new FormData();
+            data.set("token", token)
+
+            let resp = await fetch("{{ path('panel/membership/pay') }}", {
+                method: "POST",
+                body: data
+            })
+
+            let result = await resp.json();
+
+            if (result.success) {
+                window.location = "{{ path('panel/home') }}"
+            }
+        }
+    </script>
+{% endblock %}

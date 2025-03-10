@@ -1,0 +1,15 @@
+{% extends 'templates/base.twig' %}
+
+{% block body %}
+    <h1>Hola autocomplete</h1>
+
+    <div class="container">
+        <form>
+            <div class="mb-3">
+                <label for="address-autocomplete"></label>
+                <input class="form-control" name="address" data-places/>
+            </div>
+            <button class="btn btn-secondary">Submit</button>
+        </form>
+    </div>
+{% endblock %}

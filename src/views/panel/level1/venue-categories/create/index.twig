@@ -1,0 +1,39 @@
+{% extends 'templates/base.admin.twig' %}
+{% import 'templates/macros.twig' as macros %}
+
+{% block body %}
+    <h1 class="h3 mb-3">
+        Create Category
+    </h1>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('panel/home') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('panel/venue-categories/home') }}">Venue Categories</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Create</li>
+        </ol>
+    </nav>
+
+    <main class="card w-fit">
+        <div class="card-body">
+            <form  method="post">
+                {{ macros.csrf() }}
+
+                <div class="mb-3">
+                    <label>Category name
+                        <input class="form-control" name="name" required />
+                    </label>
+                </div>
+
+                <div class="mb-3">
+                    <label>
+                        Category description
+                        <input class="form-control" name="description" required />
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">SAVE</button>
+            </form>
+        </div>
+    </main>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'templates/base.admin.twig' %}
+{% import 'templates/macros.twig' as macros %}
+{% block body %}
+
+
+    <main class="container-fluid">
+
+        <h1 class="h3 mb-3">
+            Venues
+        </h1>
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('panel/home') }}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Venues</li>
+            </ol>
+        </nav>
+
+        <section class="card">
+            <div class="card-body">
+
+                <div class="d-flex mb-3">
+                    {% for status in statuses %}
+                        <a href="{{ path('panel/venues?status=' ~ status) }}" class="btn btn-outline-primary  {% if status == statusPage %}active{% endif %}" style="margin-right: 1rem;">{{ status | upper }}</a>
+                    {% endfor %}
+                </div>
+
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Address</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th>More & Actions</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for venue in venues %}
+                        <tr>
+                            <td>{{ venue.id }}</td>
+                            <td>{{ venue.name }}</td>
+                            <td>{{ venue.description }}</td>
+                            <td>{{ venue.address }}</td>
+                            <td>
+                                {{
+                                    categories
+                                    | filter(c => c.id == venue.category_id)
+                                    | first.name
+                                }}
+                            </td>
+
+                            <td>{{ venue.status }}</td>
+
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        More {{ macros.icon('more-horizontal') }}
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        {% for status in statuses %}
+                                            {% if status != venue.status %}
+                                                <li>
+                                                    <form method="post">
+                                                        {{ macros.csrf() }}
+                                                        <input type="hidden" name="id" value="{{ venue.id }}" />
+                                                        <input type="hidden" name="status" value="{{ status }}" />
+                                                        <button type="submit" class="btn btn-link">
+                                                            Set to {{ status | lower }}
+                                                        </button>
+                                                    </form>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+{% endblock %}

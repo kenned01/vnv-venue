@@ -1,0 +1,55 @@
+{% extends 'templates/base.admin.twig' %}
+
+{% block body %}
+    <h1 class="h3 mb-3">
+        <strong>Analytics</strong>
+        create category
+    </h1>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('panel/home') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('panel/venues/home') }}">My Venues</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Create</li>
+        </ol>
+    </nav>
+
+    <div class="card w-fit p-3">
+        <form  method="post">
+                <div class="mb-3">
+                    <label>Name
+                        <input class="form-control" name="name" required />
+                    </label>
+                </div>
+
+                <div class="mb-3">
+                    <label>
+                        Description
+                        <input class="form-control" name="description" required />
+                    </label>
+                </div>
+
+                <div class="mb-3">
+                    <label>
+                        Address
+                        <input class="form-control" name="address" required data-places placeholder="Address"/>
+                    </label>
+                </div>
+
+                <div class="mb-3">
+                    <label>
+                        Category
+                        <select class="form-control" name="category" required>
+                            <option value="">Select a category</option>
+                            {% for cat in categories %}
+                                <option value="{{ cat.id }}">{{ cat.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">SAVE</button>
+    </form>
+    </div>
+
+{% endblock %}

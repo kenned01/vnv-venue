@@ -1,0 +1,52 @@
+{% extends 'templates/base.admin.twig' %}
+
+{% block body %}
+    <h1 class="h3 mb-3">
+        <strong>Create Event</strong>
+        For Venue: {{ venue.name }}
+    </h1>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('panel/home') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('panel/venues/home') }}">My Venues</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('panel/venue-events/home?id=' ~ venue.id) }}">Events</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Create</li>
+        </ol>
+    </nav>
+
+    <main class="card w-fit">
+        <div class="card-body">
+            <form  method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label class="w-100">Name or Description
+                        <textarea class="form-control" maxlength="255" name="name" required></textarea>
+                    </label>
+                </div>
+
+                <div class="mb-3">
+                    <label class="w-100">
+                        Start Date
+                        <input class="form-control" name="start_date" required type="datetime-local"/>
+                    </label>
+                </div>
+
+                <div class="mb-3">
+                    <label class="w-100">
+                        End Date
+                        <input class="form-control" name="end_date" required type="datetime-local"/>
+                    </label>
+                </div>
+
+                <div class="mb-3">
+                    <label class="w-100">
+                        Image or Banner
+                        <input class="form-control" name="image" required type="file"/>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">SAVE</button>
+            </form>
+        </div>
+    </main>
+{% endblock %}

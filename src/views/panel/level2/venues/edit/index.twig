@@ -1,0 +1,58 @@
+{% extends 'templates/base.admin.twig' %}
+
+{% block body %}
+    <h1 class="h3 mb-3">
+        Edit Venue
+    </h1>
+
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('panel/home') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('panel/venues/home') }}">My Venues</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Edit</li>
+        </ol>
+    </nav>
+
+    <main class="card w-fit">
+        <form class="card-body"  method="post">
+            <div class="mb-3">
+                <label>Name
+                    <input class="form-control" name="name" required value="{{ data.name }}"/>
+                </label>
+            </div>
+
+            <div class="mb-3">
+                <label>
+                    Description
+                    <input class="form-control" name="description" required value="{{ data.description }}"/>
+                </label>
+            </div>
+
+            <div class="mb-3">
+                <label>
+                    Address
+                    <input class="form-control" name="address" required value="{{ data.address }}" data-places />
+                </label>
+            </div>
+
+            <div class="mb-3">
+                <label>
+                    Category
+                    <select class="form-control" name="category" required>
+                        <option value="">Select a category</option>
+                        {% for cat in categories %}
+                            <option value="{{ cat.id }}" {% if cat.id == data.category_id %}selected{% endif %}>
+                                {{ cat.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </div>
+
+            {% if data is not null %}
+                <button type="submit" class="btn btn-primary">SAVE</button>
+            {% endif %}
+        </form>
+    </main>
+{% endblock %}

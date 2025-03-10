@@ -33,10 +33,12 @@ class TemplateResponse
 
         $twig->addFunction(new TwigFunction('asset_for', [LocationUtils::class, 'assetFor']));
         $twig->addFunction(new TwigFunction('path', [LocationUtils::class, 'assetFor']));
+        $twig->addFunction(new TwigFunction('get_csrf', [CSRF::class, 'generateCSRF']));
 
         return $twig->render($templateChild, [
             "user" => LoginService::getSession(),
             "alertMessage" => MessageUtil::getMessage(),
+            "env" => $_ENV,
             ...$data
         ]);
     }

@@ -12,6 +12,38 @@
 
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet" />
+    <style>
+        .sidebar [data-bs-toggle=collapse]:after {
+            border: solid;
+            border-width: 0 .075rem .075rem 0;
+            content: " ";
+            display: inline-block;
+            padding: 2px;
+            position: absolute;
+            right: 1.5rem;
+            top: 1.2rem;
+            transform: rotate(45deg);
+            transition: all .2s ease-out;
+        }
+
+        .sidebar [aria-expanded=true]:after, .sidebar [data-bs-toggle=collapse]:not(.collapsed):after {
+            top: 1.4rem;
+            transform: rotate(-135deg);
+        }
+
+        .sidebar-dropdown .sidebar-link:before {
+            content: "→";
+            display: inline-block;
+            left: -14px;
+            position: relative;
+            transform: translateX(0);
+            transition: all .1sease;
+        }
+
+        .w-fit {
+            width: fit-content;
+        }
+    </style>
     {% block style %}
     {% endblock %}
 </head>
@@ -25,7 +57,7 @@
 
             <main class="content">
                 <div class="container-fluid p-0">
-                    {% block content %}
+                    {% block body %}
                     {% endblock %}
                 </div>
             </main>

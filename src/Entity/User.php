@@ -4,23 +4,43 @@ namespace App\Entity;
 
 class User
 {
-    private string $id;
-    private string $password;
+
+    public static int $ADMIN_USER_LEVEL = 1;
+
+    private int $id;
+    private string $name;
+    private string $lastname;
     private string $email;
-    private int $level;
+    private string $password;
+    private ?string $phone;
+    private ?string $phoneCode;
+    private ?int $phoneValidation = 0;
+    private ?string $membershipDueDate;
+    private ?int $level;
 
     /**
      * @param string $id
-     * @param string $password
+     * @param string $name
+     * @param string $lastname
      * @param string $email
-     * @param int $level
+     * @param string $password
+     * @param string|null $phone
+     * @param int|null $phoneValidation
+     * @param string|null $membershipDueDate
+     * @param int|null $level
      */
-    public function __construct(string $id, string $password, string $email, int $level)
+    public function __construct(string $id, string $name, string $lastname, string $email, string $password, ?string $phone, ?int $phoneValidation, ?string $membershipDueDate, ?int $level, ?string $phoneCode)
     {
         $this->id = $id;
-        $this->password = $password;
+        $this->name = $name;
+        $this->lastname = $lastname;
         $this->email = $email;
+        $this->password = $password;
+        $this->phone = $phone;
+        $this->phoneValidation = $phoneValidation;
+        $this->membershipDueDate = $membershipDueDate;
         $this->level = $level;
+        $this->phoneCode = $phoneCode;
     }
 
     public function getId(): string
@@ -33,14 +53,24 @@ class User
         $this->id = $id;
     }
 
-    public function getPassword(): string
+    public function getName(): string
     {
-        return $this->password;
+        return $this->name;
     }
 
-    public function setPassword(string $password): void
+    public function setName(string $name): void
     {
-        $this->password = $password;
+        $this->name = $name;
+    }
+
+    public function getLastname(): string
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(string $lastname): void
+    {
+        $this->lastname = $lastname;
     }
 
     public function getEmail(): string
@@ -53,6 +83,46 @@ class User
         $this->email = $email;
     }
 
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
+
+    public function getPhone(): string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(string $phone): void
+    {
+        $this->phone = $phone;
+    }
+
+    public function getPhoneValidation(): int
+    {
+        return $this->phoneValidation;
+    }
+
+    public function setPhoneValidation(int $phoneValidation): void
+    {
+        $this->phoneValidation = $phoneValidation;
+    }
+
+    public function getMembershipDueDate(): ?string
+    {
+        return $this->membershipDueDate;
+    }
+
+    public function setMembershipDueDate(string $membershipDueDate): void
+    {
+        $this->membershipDueDate = $membershipDueDate;
+    }
+
     public function getLevel(): int
     {
         return $this->level;
@@ -63,6 +133,15 @@ class User
         $this->level = $level;
     }
 
+    public function getPhoneCode(): ?string
+    {
+        return $this->phoneCode;
+    }
+
+    public function setPhoneCode(?string $phoneCode): void
+    {
+        $this->phoneCode = $phoneCode;
+    }
 
 
 

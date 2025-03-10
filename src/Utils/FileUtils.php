@@ -40,4 +40,34 @@ class FileUtils
 
         return "files/" . $folder . "/". $fileName;
     }
+
+    public static function hasFile(array $files, string $file): bool {
+        if (empty($files)) {
+            return false;
+        }
+
+        if (!isset($files[$file])) {
+            return false;
+        }
+
+        if (empty($files[$file]['name'])) {
+            return false;
+        }
+        return true;
+    }
+
+    public static function removeFile(string $filename): bool {
+        if (empty($filename)) {
+            return false;
+        }
+
+        $fileLocation = dirname(__DIR__, 2) . '/public/' . $filename;
+
+        if (file_exists($fileLocation)) {
+            unlink($fileLocation);
+            return true;
+        }
+
+        return false;
+    }
 }

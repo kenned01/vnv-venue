@@ -3,18 +3,16 @@
 namespace App\Repositories;
 
 use PDO;
-use PDOException;
 use PDOStatement;
 
 class Connection
 {
 
     private PDO $dbh; // Database Handler
-    private \PDOStatement|false $stmt;  //Statement
-    private string $error;
+    private PDOStatement|false $stmt;  //Statement
 
 
-    function __construct()  {
+    public function __construct()  {
         $DATABASE_URL = $_ENV["DATABASE_URL"];
         $this->dbh = new PDO ($DATABASE_URL);
         $this->dbh->exec('set names utf8');
@@ -22,7 +20,7 @@ class Connection
 
     /**
      * Set query
-     * @param String $sql
+     * @param string $sql
      */
     public function query(string $sql): void
     {
@@ -32,11 +30,9 @@ class Connection
     /**
      * Show the full query
      */
-    public function showQuery(){
-        if ($this->stmt instanceof PDOStatement){
-            return  $this->stmt->fullQuery;
-        }
-        return false;
+    public function showQuery(): void
+    {
+        $this->stmt->debugDumpParams();
     }
 
     public function bind($param, $value, $type=null): void
@@ -85,9 +81,9 @@ class Connection
 
     /**
      * Return One row
-     * @return Object
+     * @return object|bool
      */
-    public function fetchOne(): object
+    public function fetchOne(): object | bool
     {
         $this->execute();
         return $this->stmt->fetch(PDO::FETCH_OBJ);
@@ -95,9 +91,10 @@ class Connection
 
     /**
      * Return number of rows
-     * @return Number
+     * @return int
      */
-    public function count(){
+    public function count(): int
+    {
         $this->execute();
         return $this->stmt->rowCount();
     }

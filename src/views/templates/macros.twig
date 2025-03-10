@@ -1,0 +1,11 @@
+
+{#
+    This macro blocks all csrf token attacks
+#}
+{% macro csrf() %}
+    <input type="hidden" name="csrf_token" value="{{ get_csrf() }}" />
+{% endmacro %}
+
+{% macro icon(iconName) %}
+    <i class="align-middle" data-feather="{{ iconName }}"></i>
+{% endmacro %}

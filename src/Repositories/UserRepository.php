@@ -6,7 +6,7 @@ class UserRepository extends BaseRepository
 {
 
     public function __construct() {
-        $this->table = "user";
+        $this->table = "users";
         $this->db = new Connection();
     }
 }

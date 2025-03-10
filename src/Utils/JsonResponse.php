@@ -6,21 +6,28 @@ class JsonResponse
 {
 
 
-    private string $data;
+    private mixed $data;
+    /**
+     * @var int|mixed
+     */
+    private mixed $status;
 
-    public function __construct($data)
+    public function __construct($data, $status = 200)
     {
         $this->data = $data;
+        $this->status = $status;
     }
 
-    public static function createResponse(string $data): Response
+    public static function createResponse(mixed $data, $status = 200): JsonResponse
     {
-        return new Response($data);
+        return new JsonResponse($data);
     }
 
     public function handle(): void
     {
         header('Content-Type: application/json');
+        http_response_code($this->status);
+
         echo json_encode($this->data);
     }
 }

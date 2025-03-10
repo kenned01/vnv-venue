@@ -6,7 +6,6 @@ use App\Entity\User;
 use App\Services\LoginService;
 use App\Utils\LocationUtils;
 use Exception;
-use JetBrains\PhpStorm\NoReturn;
 
 class Kernel {
 
@@ -55,9 +54,16 @@ class Kernel {
 
             // INCLUDE ADMIN VIEWS
             if ($urlViews[0] == self::$protectedFolderViews && $this->isLoggedIn()) {
+
+                LoginService::verifyMany([
+                    function () use ($urlViews) { return LoginService::verifyPhoneConfirmation($urlViews); },
+                    function () use ($urlViews) { return LoginService::verifyMembershipDueDate($urlViews); }
+                ]);
+
                 if (count($urlViews) == 1) {
                     LocationUtils::redirectInternal("panel/home");
                 }
+
                 $this->includeAdminViewAndExit($this->getPrivateView($urlViews));
             }
 
@@ -99,7 +105,7 @@ class Kernel {
 
     private function getPrivateView(array $urlViews): array
     {
-        $view = implode(array_slice($urlViews, 1));
+        $view = implode(DIRECTORY_SEPARATOR, array_slice($urlViews, 1));
         $user = LoginService::getSession();
         $userLevel = $user->getLevel();
 
@@ -118,18 +124,23 @@ class Kernel {
 
     private function getApiViews(array $urlViews): array
     {
-        $view = implode(DIRECTORY_SEPARATOR, $urlViews);
+        $view = implode(DIRECTORY_SEPARATOR, array_slice($urlViews, 1));
+
         $baseView = __DIR__."/views/".self::$apiFolderViews;
 
         if (file_exists("$baseView/$view.php")) {
             return ["$baseView/$view.php", false];
         }
 
+        if (file_exists("$baseView/$view/index.php")) {
+            return ["$baseView/$view/index.php", false];
+        }
+
+
         return [__DIR__."/views/" . self::$apiFolderViews . "/" . self::$notFoundApi, false];
     }
 
-    #[NoReturn]
-    private function includeViewAndExit(array $payload): void
+    private function includeViewAndExit(array $payload): never
     {
         $view = $payload[0];
         $isLegacy = $payload[1];
@@ -146,8 +157,7 @@ class Kernel {
         exit(0);
     }
 
-    #[NoReturn]
-    private function includeAdminViewAndExit(array $payload): void
+    private function includeAdminViewAndExit(array $payload): never
     {
         $view = $payload[0];
         $isLegacy = $payload[1];
@@ -167,9 +177,9 @@ class Kernel {
     /**
      * @param string $baseView
      * @param mixed $view
-     * @return string
+     * @return array
      */
-    public function getView(string $baseView, mixed $view): array
+    public function getView(string $baseView, string $view): array
     {
         if (file_exists("$baseView/$view.php")) {
             return ["$baseView/$view.php", false];

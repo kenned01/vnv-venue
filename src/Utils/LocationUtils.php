@@ -41,20 +41,27 @@ class LocationUtils
         $folderLocationArray = explode(DIRECTORY_SEPARATOR, $folderLocation);
         return end($folderLocationArray);
     }
-
-
-    #[NoReturn]
-    public static function redirectTo(string $path): void
+    
+    public static function redirectTo(string $path): never
     {
         header("Location: $path");
         exit();
     }
 
-    #[NoReturn]
-    public static function redirectInternal(string $path): void
+    public static function redirectInternal(string $path): never
     {
         $internalPath = self::pathFor($path);
         header("Location: $internalPath");
+        exit();
+    }
+
+    public static function reload(): void {
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
+        $host = $_SERVER['HTTP_HOST'];
+        $uri = $_SERVER['REQUEST_URI'];
+        $fullUrl = $protocol . "://" . $host . $uri;
+
+        header("Location: $fullUrl");
         exit();
     }
 }

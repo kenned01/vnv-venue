@@ -1,6 +1,5 @@
 <?php
 
-use App\Repositories\VenueCategoriesRepository;
 use App\Repositories\VenuePhotosRepository;
 use App\Repositories\VenueRepository;
 use App\Services\LoginService;
@@ -9,12 +8,10 @@ use App\Utils\LocationUtils;
 use App\Utils\MessageUtil;
 use App\Utils\Router;
 use App\Utils\TemplateResponse;
-use JetBrains\PhpStorm\NoReturn;
 
 $router = new Router();
 
-#[NoReturn]
-function uploadPhoto(): void {
+function uploadPhoto(): never {
     $venueId = $_GET["id"];
     $venueRepository = new VenueRepository();
     $repo = new VenuePhotosRepository();
@@ -45,8 +42,7 @@ function uploadPhoto(): void {
     LocationUtils::redirectInternal("panel/venue-photos/home?id=$venueId");
 }
 
-#[NoReturn]
-function deletePhoto(): void {
+function deletePhoto(): never {
     $id = $_POST['id'];
     $venueId = $_GET["id"];
     $repo = new VenuePhotosRepository();

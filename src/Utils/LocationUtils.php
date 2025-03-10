@@ -2,8 +2,6 @@
 
 namespace App\Utils;
 
-use JetBrains\PhpStorm\NoReturn;
-
 class LocationUtils
 {
 
@@ -41,7 +39,7 @@ class LocationUtils
         $folderLocationArray = explode(DIRECTORY_SEPARATOR, $folderLocation);
         return end($folderLocationArray);
     }
-    
+
     public static function redirectTo(string $path): never
     {
         header("Location: $path");

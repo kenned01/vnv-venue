@@ -49,7 +49,7 @@ class TemplateResponse
      * @throws LoaderError
      */
     public static function renderInTemplates(string $templateName, array $data = []): string {
-        $templatesFolder  = __DIR__."/../views/templates";
+        $templatesFolder  = __DIR__."/../views";
 
         $loader = new FilesystemLoader($templatesFolder);
 
@@ -59,9 +59,10 @@ class TemplateResponse
         $twig->addFunction(new TwigFunction('asset_for', [LocationUtils::class, 'assetFor']));
         $twig->addFunction(new TwigFunction('path', [LocationUtils::class, 'assetFor']));
 
-        return $twig->render($templateName, [
+        return $twig->render("templates/$templateName", [
             "user" => LoginService::getSession(),
             "alertMessage" => MessageUtil::getMessage(),
+            "env" => $_ENV,
             ...$data
         ]);
     }

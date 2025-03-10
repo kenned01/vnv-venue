@@ -81,7 +81,7 @@ class Kernel {
             $this->includeViewAndExit($this->getPublicView($urlViews));
         } catch (Exception $exception) {
 
-            if ($_ENV["app_env"] == "debug") {
+            if ($_ENV["APP_ENV"] == "debug") {
                 throw $exception;
             }
 
@@ -151,9 +151,8 @@ class Kernel {
         }
 
         // handle legacy includes
-        include __DIR__."/views/templates.old/base.start.php";
-        include $view;
-        include __DIR__."/views/templates.old/base.end.php";
+        $_SESSION["includeView"] = $view;
+        include __DIR__."/views/templates.old/public.php";
         exit(0);
     }
 
@@ -168,9 +167,8 @@ class Kernel {
         }
 
         // handle legacy includes
-        include __DIR__."/views/templates.old/base-admin.start.php";
-        include $view;
-        include __DIR__."/views/templates.old/base-admin.end.php";
+        $_SESSION["includeView"] = $view;
+        include __DIR__."/views/templates.old/admin.php";
         exit(0);
     }
 
